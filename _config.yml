@@ -20,7 +20,7 @@ timezone: Asia/Seoul
 
 title: 멍식 블로그 # the main title
 
-tagline: AI Engineer # it will display as the sub-title
+tagline: Hello World! 🥳 # it will display as the sub-title
 
 description: >- # used by seo meta and the atom feed
   인공지능, 딥러닝, 머신러닝, 자연어 처리, 비전, 트랜스포머, cnn, 파라미터, 개발
