@@ -1,7 +1,7 @@
 ---
 title : missing data를 다루는 방법들 
 date : 2023-11-05 14:00:00 +09:00
-categories : [AI Note]
+categories : [About Data]
 tags : [missing data, 결측치] #소문자만 가능
 description: missing data를 다루는 여러가지 방법들
 toc: true
@@ -9,7 +9,7 @@ toc_sticky: true
 toc_label: 목차
 math: true
 mermaid: true
-image: /assets/img/post/10.jpeg
+image: /assets/img/post/about_data/10.jpeg
 ---
 
 > 취업 후 현업에서 쓰이는 데이터를 직접 다뤄보니 Missing Data가 굉장히 많았습니다.
@@ -132,23 +132,23 @@ numeric_data = imputer_mice.fit_transform(numeric_data)
 
 예를 들어, 개인 대출 홍보를 위해 데이터 샘플을 기록한다고 하자. 
 
-![Missing-Data](/assets/img/post/Missing%20Data%20Handling.png){:style="border:1px solid #eaeaea; border-radius: 7px; padding: 0px;" }
+![Missing-Data](/assets/img/post/about_data/Missing%20Data%20Handling.png){:style="border:1px solid #eaeaea; border-radius: 7px; padding: 0px;" }
 
 이제 표에서 누락된 값을 채워야한다 
 
-![Missing-Data](/assets/img/post/Missing%20Data%20Handling%20(1).png){:style="border:1px solid #eaeaea; border-radius: 7px; padding: 0px;" }
+![Missing-Data](/assets/img/post/about_data/Missing%20Data%20Handling%20(1).png){:style="border:1px solid #eaeaea; border-radius: 7px; padding: 0px;" }
 
 정답값은 위와 같다. 이제 빈칸을 어떻게 채우는지 알아보자.
 
 우선 Person loan은 조사 목적이므로 제외하자.
 
-![Missing-Data](/assets/img/post/Missing%20Data%20Handling%20(2).png){:style="border:1px solid #eaeaea; border-radius: 7px; padding: 0px;" }
+![Missing-Data](/assets/img/post/about_data/Missing%20Data%20Handling%20(2).png){:style="border:1px solid #eaeaea; border-radius: 7px; padding: 0px;" }
 
 그렇게하면 위와 같은 표가 나온다.
 
 여기서 Mean, Medium과 같은 평균 대치 방법을 사용하지 않는 이유는 Mean, Medium과 같은 방법은 특정 열을 사용하여 해당 열의 결측치를 대치하기 때문이다.
 
-![Missing-Data](/assets/img/post/Missing%20Data%20Handling%20(3).png){:style="border:1px solid #eaeaea; border-radius: 7px; padding: 0px;" }
+![Missing-Data](/assets/img/post/about_data/Missing%20Data%20Handling%20(3).png){:style="border:1px solid #eaeaea; border-radius: 7px; padding: 0px;" }
 
 평균 대치를 사용하면 위와 같은 결과가 나오게 된다. 
 
@@ -158,39 +158,39 @@ numeric_data = imputer_mice.fit_transform(numeric_data)
 
 1. 각 열의 평균으로 평균 대치를 사용하여 모든 결측치를 대치한다. 이것을 `제로 데이터셋` 이라고 한다.
 
-![Missing-Data](/assets/img/post/Missing%20Data%20Handling%20(4).png){:style="border:1px solid #eaeaea; border-radius: 7px; padding: 0px;" }
+![Missing-Data](/assets/img/post/about_data/Missing%20Data%20Handling%20(4).png){:style="border:1px solid #eaeaea; border-radius: 7px; padding: 0px;" }
 
 2. 나머지 특성과 행(experience, salary의 상위 5개 행)은 특성 매트릭스(보라색 셀)이 되고, age가 구하고자 하는 변수(노란색 셀)이 된다. X=experience 및 salary, Y=age로 채워진 행에 대해 선형 회귀 모델을 실행한다. 결측 연령을 추정하기 위해 결측치가 속한 행(흰색 셀)을 테스트 데이터로 사용한다.
 
-![Missing-Data](/assets/img/post/Missing%20Data%20Handling%20(5).png){:style="border:1px solid #eaeaea; border-radius: 7px; padding: 0px;" }
+![Missing-Data](/assets/img/post/about_data/Missing%20Data%20Handling%20(5).png){:style="border:1px solid #eaeaea; border-radius: 7px; padding: 0px;" }
 
 3. 이렇게 하면, 상위 5개 행은 학습 데이터가 되고 age가 누락된 행은 테스트 데이터가 된다. 이제 age=11, salary=130을 사용하여 해당 age를 예측한다.
 
-![Missing-Data](/assets/img/post/Missing%20Data%20Handling%20(6).png){:style="border:1px solid #eaeaea; border-radius: 7px; padding: 0px;" }
+![Missing-Data](/assets/img/post/about_data/Missing%20Data%20Handling%20(6).png){:style="border:1px solid #eaeaea; border-radius: 7px; padding: 0px;" }
 
 선형 회귀 모델을 실행했을 때, 34.99로 예측한 것을 확인할 수 있다.
 
 4. age열의 누락된 셀에서 예상 age 값을 업데이트한다. 이제 expreience에 부여된 값을 제거한다. 위와 같은 방식으로 선형 회귀 모델을 실행하면 0.98이 나온다.
 
-![Missing-Data](/assets/img/post/Missing%20Data%20Handling%20(7).png){:style="border:1px solid #eaeaea; border-radius: 7px; padding: 0px;" }
+![Missing-Data](/assets/img/post/about_data/Missing%20Data%20Handling%20(7).png){:style="border:1px solid #eaeaea; border-radius: 7px; padding: 0px;" }
 
 5. 마지막으로 experience를 업데이트하고 salary를 지운다. 앞서 했던 것과 같은 방식으로 예측을 수행하면 `70`이 된다.
 
-![Missing-Data](/assets/img/post/Missing%20Data%20Handling%20(8).png){:style="border:1px solid #eaeaea; border-radius: 7px; padding: 0px;" }
+![Missing-Data](/assets/img/post/about_data/Missing%20Data%20Handling%20(8).png){:style="border:1px solid #eaeaea; border-radius: 7px; padding: 0px;" }
 
 이제 원래 데이터셋의 누락된 값을 대치했고 첫 번째 반복 실행 후 예측된 값이 표시된다. 
 
 6. 0 번째와 첫 번째 데이터 세트를 뺀다. 결과 데이터셋은 다음과 같다.
 
-![Missing-Data](/assets/img/post/Missing%20Data%20Handling%20(9).png){:style="border:1px solid #eaeaea; border-radius: 7px; padding: 0px;" }
+![Missing-Data](/assets/img/post/about_data/Missing%20Data%20Handling%20(9).png){:style="border:1px solid #eaeaea; border-radius: 7px; padding: 0px;" }
 
 7. 이제 첫 번째 데이터셋을 기본 데이터셋으로 대치하고 means 대치가 있는 제로 데이터셋을 버린다. 
 
-![Missing-Data](/assets/img/post/Missing%20Data%20Handling%20(10).png){:style="border:1px solid #eaeaea; border-radius: 7px; padding: 0px;" }
+![Missing-Data](/assets/img/post/about_data/Missing%20Data%20Handling%20(10).png){:style="border:1px solid #eaeaea; border-radius: 7px; padding: 0px;" }
 
 최종적으로 다음과 같은 결과를 얻게 된다.
 
-![Missing-Data](/assets/img/post/Missing%20Data%20Handling%20(11).png){:style="border:1px solid #eaeaea; border-radius: 7px; padding: 0px;" }
+![Missing-Data](/assets/img/post/about_data/Missing%20Data%20Handling%20(11).png){:style="border:1px solid #eaeaea; border-radius: 7px; padding: 0px;" }
 
 <span style="color:violet">이런 식으로 반복 작업을 수행해서 차이를 0에 가깝게 만들면 된다.</span>
 
@@ -213,7 +213,7 @@ imputed_train_df = imp_mean.transform(train)
 
 Imputation으로 인한 노이즈 증가 문제를 해결하기 위한 방법이다. 단순하게 한 번 Imputation을 진행한 것보다 여러 Imputation을 조합하는 것이 더 좋다는 아이디어이다. 모든 MI는 3가지 과정을 거친다.
 
-![MI](/assets/img/post/Missing%20Data%20Handling%20(12).png){:style="border:1px solid #eaeaea; border-radius: 7px; padding: 0px;" }
+![MI](/assets/img/post/about_data/Missing%20Data%20Handling%20(12).png){:style="border:1px solid #eaeaea; border-radius: 7px; padding: 0px;" }
 
 1. **Imputation** : distribution을 토대로 m개의 데이터셋을 imputation 합니다. 이 과정에서 Markov Chain Monte Carlo (MCMC)를 사용하면 더 나은 결과를 얻을 수 있다고 한다
 2. **Analysis** : m개의 완성된 데이터셋을 분석한다

@@ -1,7 +1,7 @@
 ---
 title : gradient descent 직접 구현해보기
 date : 2023-08-21 21:54:00 +09:00
-categories : [AI Note]
+categories : [Deep Learning]
 tags : [gradient descent, backpropagation] #소문자만 가능
 description: gradient descent를 구현해보고 눈으로 확인해보기
 toc: true
@@ -9,7 +9,7 @@ toc_sticky: true
 toc_label: 목차
 math: true
 mermaid: true
-image: /assets/img/post/gradient_descent.png
+image: /assets/img/post/deep_learning/gradient_descent.png
 ---
 
 > gradient descent 방법은 1차 미분계수를 이용해 함수의 최소값을 찾아가는 iterative한 방법입니다.
@@ -48,7 +48,7 @@ def make_linear(w=0.5, b=0.8, size=50, noise=1.0):
 x, y = make_linear(w=0.3, b=0.5, size=100, noise=0.01)
 ```
 
-![샘플 데이터셋 그래프](/assets/img/post/sample_dataset.png){:style="border:1px solid #eaeaea; border-radius: 7px; padding: 0px;" }
+![샘플 데이터셋 그래프](/assets/img/post/deep_learning/sample_dataset.png){:style="border:1px solid #eaeaea; border-radius: 7px; padding: 0px;" }
 
 ### 3. 샘플 데이터셋인 x와 y를 `torch.as_tensor()`로 텐서(Tensor) 변환하기
 
@@ -170,7 +170,7 @@ print("----" * 15)
 print("{0:03d} w = {1:.1f}, b = {2:.1f} loss = {3:.5f}".format(epoch, w.item(), b.item(), loss.item()))
 ```
 
-![수렴](/assets/img/post/output1.png){:style="border:1px solid #eaeaea; border-radius: 7px; padding: 0px;" }
+![수렴](/assets/img/post/deep_learning/output1.png){:style="border:1px solid #eaeaea; border-radius: 7px; padding: 0px;" }
 
 랜덤으로 `w` 와 `b`를 생성했을 땐 각각 0.16465, 0.84901 로 `loss`값 0.14099를 기록하면서 정답값인 `w = 0.3`, `b = 0.5`와 큰 차이를 보였지만, iteration이 반복될 수록 그 값이 점차 줄어나가는 것을 확인할 수 있다.
 
@@ -215,7 +215,7 @@ axes[1].legend()
 plt.show()
 ```
 
-![수렴 시각화](/assets/img/post/output2.png){:style="border:1px solid #eaeaea; border-radius: 7px; padding: 0px;" }
+![수렴 시각화](/assets/img/post/deep_learning/output2.png){:style="border:1px solid #eaeaea; border-radius: 7px; padding: 0px;" }
 
 ### 결론
 
