@@ -124,7 +124,7 @@ print(np.exp(10))   # e^10 와 동일
 
 즉, 은닉층이 없는 네트워크로 표현할 수 있다. 이 예처럼 선형 함수를 이용해서는 여러 층으로 구성하는 이점을 살릴 수 없다.
 
-### ReLU 함수 
+### 3-3. ReLU 함수 
 
 최근에는 ReLU 함수가 많이 쓰이는 추세이다.
 
@@ -169,7 +169,7 @@ ReLU는 양수 입력 값에 대해 일정한 기울기를 갖고 있으므로 �
 
 ## 4. 3층 신경망 구현해보기
 
-### 1. 입력층에서 1층으로의 신호 전달을 코드로 구현하기
+### 4-1. 입력층에서 1층으로의 신호 전달을 코드로 구현하기
 
 ![입력층 to 1층](/assets/img/post/basic_theory/8.png){:style="border:1px solid #eaeaea; border-radius: 7px; padding: 0px;" }
 
@@ -189,7 +189,7 @@ print(A1) # [0.3 0.7 1.1]
 print(Z1) # [0.57444252 0.66818777 0.75026011]
 ```
 
-### 2. 1에서 2층으로의 신호 전달을 코드로 구현하기
+### 4-2. 1에서 2층으로의 신호 전달을 코드로 구현하기
 
 ![1층 to 2층](/assets/img/post/basic_theory/9.png){:style="border:1px solid #eaeaea; border-radius: 7px; padding: 0px;" }
 
@@ -205,7 +205,7 @@ A2 = np.dot(Z1, W2) + B2 # [0.51615984 1.21402696]
 Z2 = sigmoid(A2) # [0.62624937 0.7710107 ]
 ```
 
-### 3. 2층에서 출력층으로의 신호 전달
+### 4-3. 2층에서 출력층으로의 신호 전달
 
 ![2층 to 출력층](/assets/img/post/basic_theory/10.png){:style="border:1px solid #eaeaea; border-radius: 7px; padding: 0px;" }
 
@@ -227,7 +227,73 @@ print(Y) # [0.31682708 0.69627909]
 
 ✅ 출력층의 활성화 함수는 풀고자 하는 문제의 성질에 맞게 정의한다. 예를 들어, 회귀에는 항등 함수를, 이진 분류에는 시그모이드 함수를, 다중 분류에는 소프트맥스 함수를 사용하는 것이 일반적이다.
 
+### 4-4. 구현 정리
 
-## 4. 참조
+```python
+
+'''
+가중치와 편향 초기화하고 딕셔너리 변수인 network에 저장
+'''
+def init_network():
+    network = {}
+    network['W1'] = np.array([[0.1, 0.3, 0.5], [0.2, 0.4, 0.6]])
+    network['b1'] = np.array([0.1, 0.2, 0.3])
+    network['W2'] = np.array([[0.1, 0.4], [0.2, 0.5], [0.3, 0.6]])
+    network['b2'] = np.array([0.1, 0.2])
+    network['W3'] = np.array([[0.1, 0.3], [0.2, 0.4]])
+    network['b3'] = np.array([0.1, 0.2])
+    
+    return network
+
+def forward(network, x):
+    W1, W2, W3 = network['W1'], network['W2'], network['W3']
+    b1, b2, b3 = network['b1'], network['b2'], network['b3']
+
+    a1 = np.dot(x, W1) + b1
+    z1 = sigmoid(a1)
+    a2 = np.dot(z1, W2) + b2
+    z2 = sigmoid(a2)
+    a3 = np.dot(z2, W3) + b3
+    y = identity_function(a3)
+
+    return y
+
+network = init_network()
+x = np.array([1.0, 0.5])
+y = forward(network, x)
+
+print(y) # [0.31682708 0.69627909]
+```
+
+## 5. softmax 함수
+
+softmax() 함수는 지수 함수를 사용하는데, 지수 함수는 쉽게 아주 큰 값을 내뱉는다. 예를 들어, `e^1000` 은 무한대를 뜻하는 `inf` 가 되어 돌아온다. 즉, `오버플로우`가 발생한다.
+해결책으로 소프트멕스 함수의 지수 함수를 계산할 때 어떤 정수를 더하거나 빼도 결과는 바뀌지 않는다는 것을 이용한다. 보통 입력 신호 중 **최댓값** 을 이용한다.
+
+소프트멕스 함수 출력의 총합은 1 이다. 이 성질 덕분에 소프트멕스 함수의 출력을 '확률'로 해석할 수 있다.
+
+```python
+
+def softmax(a):
+    c = np.max(a)
+    exp_a = np.exp(a - c) # 오버플로우 방지
+    sum_exp_a = np.sum(exp_a)
+    y = exp_a / sum_exp_a
+    
+    return y
+
+a = np.array([0.3, 2.9, 4.0])
+y = softmax(a)
+print(y) # [0.01821127, 0.24519181, 0.73659691]
+
+np.sum(y) # 1.0 
+```
+
+## 6. 출력층의 뉴런 수 정하기
+
+출력층의 뉴런 수는 풀려는 문제에 맞게 적절히 정해야 한다. <span style="color:violet">분류에서는 분류하고 싶은 클래스 수로 설정하는 것이 일반적이다.</span>
+예를 들어, 입력 이미지를 숫자 0부터 9 중 하나로 분류하는 문제라면 출력층의 뉴런을 10개로 설정한다.
+
+## 6. 참조
 ---
 * 밑바닥부터 시작하는 딥러닝
