@@ -1,7 +1,7 @@
 ---
 title : 밑바닥부터 시작하는 딥러닝 정리 2편 - 신경망 쌓기
 date : 2024-04-28 22:48:00 +09:00
-categories : [basic concepts]
+categories : [basic theory]
 tags : [base, deep learning, perceptron, layer] #소문자만 가능
 description: 밑바닥부터 기초 쌓기
 toc: true

@@ -1,7 +1,7 @@
 ---
 title : gradient descent 직접 구현해보기
 date : 2023-08-21 21:54:00 +09:00
-categories : [Deep Learning]
+categories : [basic theory]
 tags : [gradient descent, backpropagation] #소문자만 가능
 description: gradient descent를 구현해보고 눈으로 확인해보기
 toc: true
